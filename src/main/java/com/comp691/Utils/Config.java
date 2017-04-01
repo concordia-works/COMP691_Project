@@ -20,4 +20,8 @@ public class Config {
 	// Item-based Collaborative Filtering
 	public static final String ITEMCF_OUTPUT_FOLDER = "//Users//midnightblur//comp691//mahout//itemcf//";
 	public static final String ITEMCF_REPORT_FILE = "report.txt";
+	
+	// Evaluation
+	public static final String EVA_BASED_PREDICTIONS_FOLDER = "//Users//midnightblur//comp691//mahout//usercf//";
+	public static final String EVA_RETRIEVED_PREDICTIONS_FOLDER = "//Users//midnightblur//comp691//mahout//itemcf//";
 }

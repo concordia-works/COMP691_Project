@@ -3,6 +3,8 @@ package com.comp691.Utils;
 import java.util.Set;
 
 public class Evaluation {
+	private Evaluation() {}
+	
 	public static float[] calcMetrics(Set<Long> retrievedDocs, Set<Long> relevantDocs) {
 		float[] evaluations = new float[3]; // Precision i=0, Recall i=1, F1Score i=2
 		float precision, recall, fscore;
@@ -29,5 +31,9 @@ public class Evaluation {
 		evaluations[1] = recall;
 		evaluations[2] = fscore;
 		return evaluations;
+	}
+	
+	public static void compareAlgos(String retrievedFolder, String basedFolder) {
+		
 	}
 }
