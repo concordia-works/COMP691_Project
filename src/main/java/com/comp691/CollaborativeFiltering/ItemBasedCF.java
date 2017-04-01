@@ -41,6 +41,7 @@ public class ItemBasedCF {
 			bw.write("EndTime: " + endTime + "\n");
 			bw.write("Duration: " + (endTime - startTime)/1000 + "s\n");
 			bw.close();
+			System.out.println("Item-based CF finished");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -82,7 +83,7 @@ public class ItemBasedCF {
 	
 	public static void execute() {
 		startTime = System.currentTimeMillis();
-		BasicConfigurator.configure();
+		//BasicConfigurator.configure();
     	cleanDirectory();
     	computePrediction();
 		makeReport();

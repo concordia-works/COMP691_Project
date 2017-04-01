@@ -1,7 +1,13 @@
 /target/
+<<<<<<< HEAD
 
 data/1-1999.edge
 
 data/amazon_musical_instruments_rating.txt
 
 data/amazon-ratings.edges
+=======
+data/1-1999.edge
+data/amazon_musical_instruments_rating.txt
+data/amazon-ratings.edges
+>>>>>>> master
