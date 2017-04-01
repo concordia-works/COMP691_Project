@@ -50,7 +50,7 @@ public class ItemBasedCF {
 	private static void computePrediction() {
 		try {
     		// Create the data model from dataset
-    		DataModel model = new FileDataModel(new File(Config.DATASET_AMZ_ALL_1_1999));
+    		DataModel model = new FileDataModel(new File(Config.DATASET));
     		
     		// Compute Items' similarities
     		ItemSimilarity similarity = new UncenteredCosineSimilarity(model);

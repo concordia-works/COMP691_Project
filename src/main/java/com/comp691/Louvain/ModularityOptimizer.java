@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
+import com.comp691.Louvain.prediction.Prediction;
 import com.comp691.Utils.Config;
 
 public class ModularityOptimizer
@@ -122,6 +123,9 @@ public class ModularityOptimizer
         }
 
         writeOutputFile(outputFileName, clustering);
+        
+        // add code for prediction here
+        Prediction.getPrediction();
     }
 
     private static Network readInputFile(String fileName, int modularityFunction) throws IOException
@@ -150,10 +154,10 @@ public class ModularityOptimizer
         for (j = 0; j < nLines; j++)
         {
             splittedLine = bufferedReader.readLine().split("\t");
-            node1[j] = Integer.parseInt(splittedLine[0]);
+            node1[j] = Integer.parseInt(splittedLine[0]) - 1;
             if (node1[j] > i)
                 i = node1[j];
-            node2[j] = Integer.parseInt(splittedLine[1]);
+            node2[j] = Integer.parseInt(splittedLine[1]) - 1;
             if (node2[j] > i)
                 i = node2[j];
             edgeWeight1[j] = (splittedLine.length > 2) ? Double.parseDouble(splittedLine[2]) : 1;
