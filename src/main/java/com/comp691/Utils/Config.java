@@ -21,6 +21,11 @@ public class Config {
 	public static final String ITEMCF_OUTPUT_FOLDER = "//Users//midnightblur//comp691//mahout//itemcf//";
 	public static final String ITEMCF_REPORT_FILE = "report.txt";
 	
+<<<<<<< HEAD
+	// Evaluation
+	public static final String EVA_BASED_PREDICTIONS_FOLDER = "//Users//midnightblur//comp691//mahout//usercf//";
+	public static final String EVA_RETRIEVED_PREDICTIONS_FOLDER = "//Users//midnightblur//comp691//mahout//itemcf//";
+=======
 	// Louvain
 	public static final String LOUVAIN_INPUT = "data/louvain-input.txt";
 	public static final String LOUVAIN_OUTPUT = "//Users//midnightblur//comp691//cishell//louvain_output.txt";
@@ -31,4 +36,5 @@ public class Config {
 	public static final int LOUVAIN_NO_ITERATIONS = 10; // Number of iterations (e.g., 10)
 	public static final long LOUVAIN_RANDOM_SEED = 0; // Random seed (e.g., 0)
 	public static final int LOUVAIN_PRINT_OUTPUT = 1; // Print output (0 = no; 1 = yes)
+>>>>>>> master
 }
