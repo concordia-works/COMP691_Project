@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 
-import com.comp691.Louvain.prediction.Prediction;
 import com.comp691.Utils.Config;
 
 public class ModularityOptimizer

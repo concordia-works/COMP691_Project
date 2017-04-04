@@ -1,4 +1,4 @@
-package com.comp691.Louvain.prediction;
+package com.comp691.Louvain;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
