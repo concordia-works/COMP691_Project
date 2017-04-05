@@ -53,7 +53,7 @@ public class Prediction {
 				userCommMap.put(user, comm);
 				
 				if(!communitiesUserListMap.containsKey(comm)) {
-					ArrayList<Integer> userList = new ArrayList();
+					ArrayList<Integer> userList = new ArrayList<>();
 					userList.add(user);
 					communitiesUserListMap.put(comm, userList);
 				} 
@@ -81,7 +81,7 @@ public class Prediction {
 				int item = Integer.parseInt(parts[1]);
 				
 				if(!userItemListMap.containsKey(user)) {
-					ArrayList<Integer> itemList = new ArrayList();
+					ArrayList<Integer> itemList = new ArrayList<>();
 					itemList.add(item);
 					userItemListMap.put(user, itemList);
 				} 
@@ -103,7 +103,7 @@ public class Prediction {
 			for(int user: commUserListEntry.getValue()) 
 			{
 				if(!communitiesItemSetMap.containsKey(comm)) {
-					HashMap<Integer, Integer> itemMap = new HashMap();
+					HashMap<Integer, Integer> itemMap = new HashMap<>();
 					for(int item : userItemListMap.get(user)) 
 					{
 						if(!itemMap.containsKey(item)) {
@@ -170,14 +170,14 @@ public class Prediction {
 				HashSet<Integer> predictedItemSet = new HashSet<Integer>(communitiesItemSetMapNew.get(comm).keySet());
 				predictedItemSet.removeAll(userItemListEntry.getValue());
 				
-				bw.write(user + " = ");
+				bw.write(user + " {");
 				int i = 0;
 				for (Integer integer : predictedItemSet) {
 					bw.write(integer + ",");
 					if(++i > 10)
 						break;
 				}				
-				bw.write(System.lineSeparator());
+				bw.write("}" + System.lineSeparator());
 				
 				//userPredictedItemSetMap.put(user, predictedItemSet);
 			}

@@ -24,29 +24,6 @@ public class ItemBasedCF {
 	private static long endTime;
 	private ItemBasedCF() {}
 	
-	private static void cleanDirectory() {
-		try {
-			FileUtils.cleanDirectory(new File(Config.ITEMCF_OUTPUT_FOLDER));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private static void makeReport() {
-		endTime = System.currentTimeMillis();
-		BufferedWriter bw;
-		try {
-			bw = new BufferedWriter(new FileWriter(Config.ITEMCF_OUTPUT_FOLDER + Config.ITEMCF_REPORT_FILE));
-			bw.write("StartTime: " + startTime + "\n");
-			bw.write("EndTime: " + endTime + "\n");
-			bw.write("Duration: " + (endTime - startTime)/1000 + "s\n");
-			bw.close();
-			System.out.println("Item-based CF finished");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	private static void computePrediction() {
 		try {
     		// Create the data model from dataset
@@ -62,20 +39,22 @@ public class ItemBasedCF {
     		LongPrimitiveIterator userIDs = model.getUserIDs();
     		
     		// Get users' predictions
-    		while (userIDs.hasNext()) {
+    		BufferedWriter bw = new BufferedWriter(new FileWriter(Config.ITEMCF_RESULT_FILE));
+			while (userIDs.hasNext()) {
 				long userID = userIDs.next();
+				bw.write(userID + " {");
 				List<RecommendedItem> recommendations = recommender.recommend(userID, Config.CF_NO_OF_TOP_PREDICTION);
 				if (!recommendations.isEmpty()) {
-					BufferedWriter bw = new BufferedWriter(new FileWriter(Config.ITEMCF_OUTPUT_FOLDER + userID + ".txt"));
 					for (RecommendedItem recommendation : recommendations) {
 						float predictedRating = recommendation.getValue();
 						if (predictedRating > Config.CF_RATING_THRESHOLD) {
 							bw.write(recommendation.getItemID() + ",");
 						}
 				    }
-					bw.close();
-				}	
-    		}
+				}
+				bw.write("}" + System.lineSeparator());
+			}
+			bw.close();
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
@@ -83,9 +62,11 @@ public class ItemBasedCF {
 	
 	public static void execute() {
 		startTime = System.currentTimeMillis();
+		System.out.println("Item-based CF starts");
 		//BasicConfigurator.configure();
-    	cleanDirectory();
     	computePrediction();
-		makeReport();
+    	System.out.println("Item-based CF finishes");
+    	endTime = System.currentTimeMillis();
+    	System.out.println("Item-based CF duration: " + Math.round(endTime - startTime)/1000 + "s" + System.lineSeparator());
 	}
 }

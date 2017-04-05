@@ -10,22 +10,23 @@ import java.util.Random;
 
 import com.comp691.Utils.Config;
 
-public class ModularityOptimizer
-{
-    public static void main(String[] args) throws IOException
-    {
+public class ModularityOptimizer {
+	private static long startTime;
+	private static long endTime;
+	
+    public static void execute() throws IOException {
+    	startTime = System.currentTimeMillis();
+    	System.out.println("Louvain starts");
         boolean printOutput, update;
         Clustering clustering;
         double modularity, maxModularity, resolution, resolution2;
         int algorithm, i, j, modularityFunction, nIterations, nRandomStarts;
-        long beginTime, endTime, randomSeed;
+        long beginTime, endedTime, randomSeed;
         Network network;
         Random random;
         String inputFileName, outputFileName;
         VOSClusteringTechnique VOSClusteringTechnique;
 
-        System.out.println("Modularity Optimizer version 1.3.0 by Ludo Waltman and Nees Jan van Eck");
-        System.out.println();
         inputFileName = Config.LOUVAIN_INPUT;
         outputFileName = Config.LOUVAIN_OUTPUT;
         modularityFunction = Config.LOUVAIN_MODULARITY_FUNCTION;
@@ -62,8 +63,8 @@ public class ModularityOptimizer
         random = new Random(randomSeed);
         for (i = 0; i < nRandomStarts; i++)
         {
-            if (printOutput && (nRandomStarts > 1))
-                System.out.format("Random start: %d%n", i + 1);
+//            if (printOutput && (nRandomStarts > 1))
+//                System.out.format("Random start: %d%n", i + 1);
 
             VOSClusteringTechnique = new VOSClusteringTechnique(network, resolution2);
 
@@ -71,8 +72,8 @@ public class ModularityOptimizer
             update = true;
             do
             {
-                if (printOutput && (nIterations > 1))
-                    System.out.format("Iteration: %d%n", j + 1);
+//                if (printOutput && (nIterations > 1))
+//                    System.out.format("Iteration: %d%n", j + 1);
 
                 if (algorithm == 1)
                     update = VOSClusteringTechnique.runLouvainAlgorithm(random);
@@ -84,8 +85,8 @@ public class ModularityOptimizer
 
                 modularity = VOSClusteringTechnique.calcQualityFunction();
 
-                if (printOutput && (nIterations > 1))
-                    System.out.format("Modularity: %.4f%n", modularity);
+//                if (printOutput && (nIterations > 1))
+//                    System.out.format("Modularity: %.4f%n", modularity);
             }
             while ((j < nIterations) && update);
 
@@ -95,36 +96,39 @@ public class ModularityOptimizer
                 maxModularity = modularity;
             }
 
-            if (printOutput && (nRandomStarts > 1))
-            {
-                if (nIterations == 1)
-                    System.out.format("Modularity: %.4f%n", modularity);
-                System.out.println();
-            }
+//            if (printOutput && (nRandomStarts > 1))
+//            {
+//                if (nIterations == 1)
+//                    System.out.format("Modularity: %.4f%n", modularity);
+//                System.out.println();
+//            }
         }
-        endTime = System.currentTimeMillis();
+        endedTime = System.currentTimeMillis();
 
-        if (printOutput)
-        {
-            if (nRandomStarts == 1)
-            {
-                if (nIterations > 1)
-                    System.out.println();
-                System.out.format("Modularity: %.4f%n", maxModularity);
-            }
-            else
-                System.out.format("Maximum modularity in %d random starts: %.4f%n", nRandomStarts, maxModularity);
-            System.out.format("Number of communities: %d%n", clustering.getNClusters());
-            System.out.format("Elapsed time: %d seconds%n", Math.round((endTime - beginTime) / 1000.0));
-            System.out.println();
-            System.out.println("Writing output file...");
-            System.out.println();
-        }
+//        if (printOutput)
+//        {
+//            if (nRandomStarts == 1)
+//            {
+//                if (nIterations > 1)
+//                    System.out.println();
+//                System.out.format("Modularity: %.4f%n", maxModularity);
+//            }
+//            else
+//                System.out.format("Maximum modularity in %d random starts: %.4f%n", nRandomStarts, maxModularity);
+//            System.out.format("Number of communities: %d%n", clustering.getNClusters());
+//            System.out.format("Elapsed time: %d seconds%n", Math.round((endedTime - beginTime) / 1000.0));
+//            System.out.println();
+//            System.out.println("Writing output file...");
+//            System.out.println();
+//        }
 
         writeOutputFile(outputFileName, clustering);
         
         // add code for prediction here
         Prediction.getPrediction();
+        System.out.println("Louvain finishes");
+        endTime = System.currentTimeMillis();
+    	System.out.println("Louvain duration: " + Math.round(endTime - startTime)/1000 + "s" + System.lineSeparator());
     }
 
     private static Network readInputFile(String fileName, int modularityFunction) throws IOException

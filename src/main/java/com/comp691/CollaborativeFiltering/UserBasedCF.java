@@ -29,34 +29,10 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 import com.comp691.Utils.Config;
 
-public class UserBasedCF
-{
+public class UserBasedCF {
 	private static long startTime;
 	private static long endTime;
 	private UserBasedCF() {}
-	
-	private static void cleanDirectory() {
-		try {
-			FileUtils.cleanDirectory(new File(Config.USERCF_OUTPUT_FOLDER));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private static void makeReport() {
-		endTime = System.currentTimeMillis();
-		BufferedWriter bw;
-		try {
-			bw = new BufferedWriter(new FileWriter(Config.USERCF_OUTPUT_FOLDER + Config.USERCF_REPORT_FILE));
-			bw.write("StartTime: " + startTime + "\n");
-			bw.write("EndTime: " + endTime + "\n");
-			bw.write("Duration: " + (endTime - startTime)/1000 + "s\n");
-			bw.close();
-			System.out.println("User-based CF finished");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	private static void computePrediction() {
 		try {
@@ -76,20 +52,22 @@ public class UserBasedCF
 			LongPrimitiveIterator userIDs = model.getUserIDs();
 			
 			// Get users' recommendations
+			BufferedWriter bw = new BufferedWriter(new FileWriter(Config.USERCF_RESULT_FILE));
 			while (userIDs.hasNext()) {
 				long userID = userIDs.next();
+				bw.write(userID + " {");
 				List<RecommendedItem> recommendations = recommender.recommend(userID, Config.CF_NO_OF_TOP_PREDICTION);
 				if (!recommendations.isEmpty()) {
-					BufferedWriter bw = new BufferedWriter(new FileWriter(Config.USERCF_OUTPUT_FOLDER + userID + ".txt"));
 					for (RecommendedItem recommendation : recommendations) {
 						float predictedRating = recommendation.getValue();
 						if (predictedRating > Config.CF_RATING_THRESHOLD) {
 							bw.write(recommendation.getItemID() + ",");
 						}
 				    }
-					bw.close();
 				}
+				bw.write("}" + System.lineSeparator());
 			}
+			bw.close();
 			
 //			RecommenderBuilder recommenderBuilder = new RecommenderBuilder() {
 //				  public Recommender buildRecommender(DataModel model) throws TasteException {
@@ -113,9 +91,11 @@ public class UserBasedCF
 	
     public static void execute() {
     	startTime = System.currentTimeMillis();
+    	System.out.println("User-based CF starts");
     	//BasicConfigurator.configure();
-    	cleanDirectory();
     	computePrediction();
-    	makeReport();
+    	System.out.println("User-based CF finishes");
+    	endTime = System.currentTimeMillis();
+    	System.out.println("User-based CF duration: " + Math.round(endTime - startTime)/1000 + "s" + System.lineSeparator());
     }
 }
