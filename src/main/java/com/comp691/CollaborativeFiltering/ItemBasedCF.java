@@ -3,11 +3,9 @@ package com.comp691.CollaborativeFiltering;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.log4j.BasicConfigurator;
+//import org.apache.log4j.BasicConfigurator;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
 import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
@@ -43,7 +41,7 @@ public class ItemBasedCF {
 			while (userIDs.hasNext()) {
 				long userID = userIDs.next();
 				bw.write(userID + " {");
-				List<RecommendedItem> recommendations = recommender.recommend(userID, Config.CF_NO_OF_TOP_PREDICTION);
+				List<RecommendedItem> recommendations = recommender.recommend(userID, Config.NO_TOP_PREDICTIONS);
 				if (!recommendations.isEmpty()) {
 					for (RecommendedItem recommendation : recommendations) {
 						float predictedRating = recommendation.getValue();

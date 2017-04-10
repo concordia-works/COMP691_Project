@@ -3,27 +3,16 @@ package com.comp691.CollaborativeFiltering;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.mahout.cf.taste.common.TasteException;
-import org.apache.mahout.cf.taste.eval.IRStatistics;
-import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
-import org.apache.mahout.cf.taste.eval.RecommenderIRStatsEvaluator;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
-import org.apache.mahout.cf.taste.impl.eval.GenericRecommenderIRStatsEvaluator;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
-import org.apache.mahout.cf.taste.impl.neighborhood.NearestNUserNeighborhood;
 import org.apache.mahout.cf.taste.impl.neighborhood.ThresholdUserNeighborhood;
 import org.apache.mahout.cf.taste.impl.recommender.GenericUserBasedRecommender;
-import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
 import org.apache.mahout.cf.taste.impl.similarity.UncenteredCosineSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
-import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.recommender.UserBasedRecommender;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
@@ -55,8 +44,18 @@ public class UserBasedCF {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(Config.USERCF_RESULT_FILE));
 			while (userIDs.hasNext()) {
 				long userID = userIDs.next();
+				
+				// Print users' neighbors and similarity
+//				long[] neighbors = neighborhood.getUserNeighborhood(userID);
+//				if (neighbors.length == 0)
+//					System.out.println(userID + " has no neighbor");
+//				else
+//					for (int i = 0; i < neighbors.length; i++)
+//						System.out.println(userID + " " + neighbors[i] + " " + similarity.userSimilarity(userID, neighbors[i]));
+				
 				bw.write(userID + " {");
-				List<RecommendedItem> recommendations = recommender.recommend(userID, Config.CF_NO_OF_TOP_PREDICTION);
+				List<RecommendedItem> recommendations = recommender.recommend(userID, Config.NO_TOP_PREDICTIONS);
+				
 				if (!recommendations.isEmpty()) {
 					for (RecommendedItem recommendation : recommendations) {
 						float predictedRating = recommendation.getValue();
@@ -68,22 +67,6 @@ public class UserBasedCF {
 				bw.write("}" + System.lineSeparator());
 			}
 			bw.close();
-			
-//			RecommenderBuilder recommenderBuilder = new RecommenderBuilder() {
-//				  public Recommender buildRecommender(DataModel model) throws TasteException {
-//				    UserSimilarity similarity = new UncenteredCosineSimilarity(model);
-//				    UserNeighborhood neighborhood =
-//				     new NearestNUserNeighborhood (2, similarity, model);
-//				      return
-//				      new GenericUserBasedRecommender (model, neighborhood, similarity);
-//				     }
-//				   };
-//			
-//			RecommenderIRStatsEvaluator evaluator = new GenericRecommenderIRStatsEvaluator();
-//			IRStatistics stats = evaluator.evaluate(recommenderBuilder, null, model, null, 10, org.apache.mahout.cf.taste.impl.eval.GenericRecommenderIRStatsEvaluator.CHOOSE_THRESHOLD, 1.0);
-//			System.out.println(stats.getPrecision());
-//			System.out.println(stats.getRecall());
-//			System.out.println(stats.getF1Measure());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

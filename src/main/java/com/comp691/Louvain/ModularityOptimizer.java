@@ -105,22 +105,22 @@ public class ModularityOptimizer {
         }
         endedTime = System.currentTimeMillis();
 
-//        if (printOutput)
-//        {
-//            if (nRandomStarts == 1)
-//            {
-//                if (nIterations > 1)
-//                    System.out.println();
-//                System.out.format("Modularity: %.4f%n", maxModularity);
-//            }
-//            else
-//                System.out.format("Maximum modularity in %d random starts: %.4f%n", nRandomStarts, maxModularity);
-//            System.out.format("Number of communities: %d%n", clustering.getNClusters());
-//            System.out.format("Elapsed time: %d seconds%n", Math.round((endedTime - beginTime) / 1000.0));
-//            System.out.println();
-//            System.out.println("Writing output file...");
-//            System.out.println();
-//        }
+        if (printOutput)
+        {
+            if (nRandomStarts == 1)
+            {
+                if (nIterations > 1)
+                    System.out.println();
+                System.out.format("Modularity: %.4f%n", maxModularity);
+            }
+            else
+                System.out.format("Maximum modularity in %d random starts: %.4f%n", nRandomStarts, maxModularity);
+            System.out.format("Number of communities: %d%n", clustering.getNClusters());
+            System.out.format("Elapsed time: %d seconds%n", Math.round((endedTime - beginTime) / 1000.0));
+            System.out.println();
+            System.out.println("Writing output file...");
+            System.out.println();
+        }
 
         writeOutputFile(outputFileName, clustering);
         
@@ -227,7 +227,7 @@ public class ModularityOptimizer {
 
         for (i = 0; i < nNodes; i++)
         {
-            bufferedWriter.write(i + " " + Integer.toString(clustering.getCluster(i)));
+            bufferedWriter.write((i + 1) + " " + Integer.toString(clustering.getCluster(i)));
             bufferedWriter.newLine();
         }
 

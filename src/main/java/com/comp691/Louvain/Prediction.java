@@ -35,7 +35,7 @@ public class Prediction {
 		generateCommunitiesItemSetMapNew();
 		
 		generatedUserPredictedItemSetMap();
-		System.out.println(userPredictedItemSetMap);
+		//System.out.println(userPredictedItemSetMap);
 	}
 	
 	private static void initializeCommunitiesUserListMap() {
@@ -47,7 +47,7 @@ public class Prediction {
 			
 			while ((sCurrentLine = br.readLine()) != null) {
 				String[] parts = sCurrentLine.split(" ");
-				int user = Integer.parseInt(parts[0]) + 1;
+				int user = Integer.parseInt(parts[0]);
 				int comm = Integer.parseInt(parts[1]);
 				
 				userCommMap.put(user, comm);
@@ -174,7 +174,7 @@ public class Prediction {
 				int i = 0;
 				for (Integer integer : predictedItemSet) {
 					bw.write(integer + ",");
-					if(++i > 10)
+					if(++i > Config.NO_TOP_PREDICTIONS)
 						break;
 				}				
 				bw.write("}" + System.lineSeparator());

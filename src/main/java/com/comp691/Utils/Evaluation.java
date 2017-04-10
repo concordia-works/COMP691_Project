@@ -15,7 +15,7 @@ public class Evaluation {
 			BufferedReader retrievedReader = new BufferedReader(new FileReader(retrievedFile));
 			String basedLine, retrievedLine;
 			int noUsers = 0;
-			double precision = 0.0, recall = 0.0, fscore = 0.0;
+			double precision = 0.0, recall = 0.0;
 			
 			// Calculate precision, recall and f-score for each user
 			while (((basedLine = basedReader.readLine()) != null) && ((retrievedLine = retrievedReader.readLine()) != null)) {
@@ -47,51 +47,20 @@ public class Evaluation {
 				
 				if (noBasedPredictions != 0)
 					recall += noCommonPredict/noBasedPredictions;
-				
-				if ((precision != 0.0) || (recall != 0.0))
-					fscore += 2 * precision * recall / (precision + recall);
-				
+
 				noUsers++;
 			}
 			
 			// Calculate average precision, recall and f-score
 			evaluations[0] = precision/noUsers;
 			evaluations[1] = recall/noUsers;
-			evaluations[2] = fscore/noUsers;
+			evaluations[2] = 2 * evaluations[0] * evaluations[1] / (evaluations[0] + evaluations[1]);
 			
 			basedReader.close();
 			retrievedReader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return evaluations;
-	}
-	
-	public static float[] calcMetrics(Set<Long> retrievedDocs, Set<Long> relevantDocs) {
-		float[] evaluations = new float[3]; // Precision i=0, Recall i=1, F1Score i=2
-		float precision, recall, fscore;
-		int noRetrievedDocs = retrievedDocs.size();
-		int noRelevantDocs = relevantDocs.size();
-		
-		relevantDocs.retainAll(retrievedDocs);
-		int noJointDocs = relevantDocs.size();
-		
-		// Compute Precision https://en.wikipedia.org/wiki/Precision_and_recall
-		if (noRetrievedDocs == 0)
-			precision = 0.0f;
-		else precision = noJointDocs/noRetrievedDocs;
-		
-		// Compute Recall https://en.wikipedia.org/wiki/Precision_and_recall
-		if (noRelevantDocs == 0)
-			recall = 0.0f;
-		else recall = noJointDocs/noRelevantDocs;
-		
-		// Compute balanced F-score https://en.wikipedia.org/wiki/F1_score
-		fscore = 2 * precision * recall / (precision + recall);
-		
-		evaluations[0] = precision;
-		evaluations[1] = recall;
-		evaluations[2] = fscore;
 		return evaluations;
 	}
 	

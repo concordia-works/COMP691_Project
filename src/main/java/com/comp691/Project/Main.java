@@ -24,18 +24,18 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		// Generate user-user graph for Louvain method
-		Reader.execute();
+//		cleanDirectory();
+//		Reader.execute();
 		
 		// Run Recommendation Algorithms
-//		startTime = System.currentTimeMillis();
-//		//cleanDirectory();
-//		UserBasedCF.execute();
-//		ItemBasedCF.execute();
-//		ModularityOptimizer.execute(); // Required to generate the user-user graph in the 1st run
-//		usercfVSlouvain = Evaluation.calcMetrics(Config.USERCF_RESULT_FILE, Config.LOUVAIN_PREDICTION);
-//		itemcfVSlouvain = Evaluation.calcMetrics(Config.ITEMCF_RESULT_FILE, Config.LOUVAIN_PREDICTION);
-//		writeReport();
-//		System.out.println("OPERATION FINISHED");
+		startTime = System.currentTimeMillis();
+		UserBasedCF.execute();
+		ItemBasedCF.execute();
+		ModularityOptimizer.execute(); // Required to generate the user-user graph in the 1st run
+		usercfVSlouvain = Evaluation.calcMetrics(Config.USERCF_RESULT_FILE, Config.LOUVAIN_PREDICTION);
+		itemcfVSlouvain = Evaluation.calcMetrics(Config.ITEMCF_RESULT_FILE, Config.LOUVAIN_PREDICTION);
+		writeReport();
+		System.out.println("OPERATION FINISHED");
 	}
 	
 	private static void cleanDirectory() {
@@ -51,16 +51,18 @@ public class Main {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(Config.REPORT_FILE));
 			bw.write("Dataset = " + Config.DATASET + System.lineSeparator());
 			bw.write("CF Rating threshold = " + Config.CF_RATING_THRESHOLD + System.lineSeparator());
-			bw.write("CF Number of top predictions = " + Config.CF_NO_OF_TOP_PREDICTION + System.lineSeparator());
 			bw.write("User-based CF neighborhood similarity threshold = " + Config.USERCF_NEIGHBORHOOD_SMILARITY_THRESHOLD + System.lineSeparator());
-			bw.write("User-based CF Number of nearest neighbors = " + Config.USERCF_NEAREST_USER_NEIGHBORHOOD + System.lineSeparator());
+			bw.write("Number of top predictions = " + Config.NO_TOP_PREDICTIONS + System.lineSeparator());
+			bw.write("Louvain resolution = " + Config.LOUVAIN_RESOLUTION + System.lineSeparator());
 			bw.write("Louvain no of random start = " + Config.LOUVAIN_NO_RANDOM_STARTS + System.lineSeparator());
 			bw.write("Louvain no of iterations = " + Config.LOUVAIN_NO_ITERATIONS + System.lineSeparator());
 			endTime = System.currentTimeMillis();
 			bw.write("Duration: " + (endTime - startTime)/1000 + "s" + System.lineSeparator());
 			bw.write(System.lineSeparator());
-			bw.write("Louvain vs UserCF: precision = " + usercfVSlouvain[0] + "; recall = " + usercfVSlouvain[1] + "; fscore = " + usercfVSlouvain[2] + System.lineSeparator());
-			bw.write("Louvain vs ItemCF: precision = " + itemcfVSlouvain[0] + "; recall = " + itemcfVSlouvain[1] + "; fscore = " + itemcfVSlouvain[2] + System.lineSeparator());
+			bw.write("Louvain vs UserCF: precision = " + usercfVSlouvain[0] * 100 + "%; recall = " + usercfVSlouvain[1] * 100 + "%; fscore = " + usercfVSlouvain[2] + System.lineSeparator());
+			bw.write("Louvain vs ItemCF: precision = " + itemcfVSlouvain[0] * 100 + "%; recall = " + itemcfVSlouvain[1] * 100 + "%; fscore = " + itemcfVSlouvain[2] + System.lineSeparator());
+			System.out.println("Louvain vs UserCF: precision = " + usercfVSlouvain[0] * 100 + "%; recall = " + usercfVSlouvain[1] * 100 + "%; fscore = " + usercfVSlouvain[2]);
+			System.out.println("Louvain vs ItemCF: precision = " + itemcfVSlouvain[0] * 100 + "%; recall = " + itemcfVSlouvain[1] * 100 + "%; fscore = " + itemcfVSlouvain[2]);
 			bw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
